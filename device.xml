@@ -1,0 +1,6 @@
+<device_state libver="3.2" filemajor="1" fileminor="0">
+    <device name="DFx 21AUC03" base_name="DFx 21AUC03" unique_name="DFx 21AUC03 19900138">
+        <videoformat>RGB32 (744x480)</videoformat>
+        <fps>60.000240000960005</fps>
+    </device>
+</device_state>

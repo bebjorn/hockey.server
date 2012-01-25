@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SocketException" Collapsed="true">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAIAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d:\commonsource\practicalsocket.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Socket" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAEAAAAgAAAAAAAIAAAAAQQAAAAgAACAgAE=</HashCode>
+      <FileName>d:\commonsource\practicalsocket.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommunicatingSocket" Collapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAgAAAggAAAAAAAAACAAQAAAAAAAA=</HashCode>
+      <FileName>d:\commonsource\practicalsocket.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TCPSocket" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d:\commonsource\practicalsocket.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TCPServerSocket" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAABAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d:\commonsource\practicalsocket.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UDPSocket" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAIEAAAoAADAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>d:\commonsource\practicalsocket.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Serial" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAABAAAABAABAAAEEAAAAABAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\CommonSource\SerialClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CamCapture" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEQAAAAAAEAQAQAAAAAAAAAAKAAAAAAAAACAAQAA=</HashCode>
+      <FileName>CamCapture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HockeyGame" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GAAAAAAAAAAABAAAAgAAAAAAAAAAAggAAAAAEAARAgA=</HashCode>
+      <FileName>HockeyGame.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjectTracker" Collapsed="true">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAQgAAAAAAAAAQAAFAIAAAYAQgAAAIgIAAA=</HashCode>
+      <FileName>ObjectTracker.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Team" Collapsed="true">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAFABAAAAAAQAAAAAEAEAAAAAAAA=</HashCode>
+      <FileName>TeamConnection.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SerialComm" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAABAAAAEAAAQAAIBAAAAAABIgAAAAAAAAAEEA=</HashCode>
+      <FileName>D:\CommonSource\serialcomm.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Puck" Collapsed="true">
+    <Position X="9.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAACAAAABgAAAABAA=</HashCode>
+      <FileName>GameState.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Connection" Collapsed="true">
+    <Position X="7.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAQAAAAAAAAgIAAAAAAAAAAA=</HashCode>
+      <FileName>TeamConnection.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="socklen_t" Collapsed="true">
+    <Position X="9.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\CommonSource\PracticalSocket.cpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="raw_type" Collapsed="true">
+    <Position X="7.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\CommonSource\PracticalSocket.cpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

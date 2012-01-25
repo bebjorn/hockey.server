@@ -4,3 +4,7 @@ Release
 *.suo
 *.pdb
 
+
+/measurements.txt
+/commands.txt
+/device.xml

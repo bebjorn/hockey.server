@@ -18,7 +18,7 @@ class ObjectTracker {
    public:
 	   ObjectTracker(){};
 	  ObjectTracker(IplImage* _searchRegion,string color="",bool _calibrationMode=false);
-      void trackObject(IplImage* image, CvPoint2D32f* objPos);
+      void trackObject(IplImage* image, CvPoint2D32f* objPos,bool erode=true);
 	  void setColor(string color);
 	  void setColor(CvScalar _minColor, CvScalar _maxColor);
 	  void saveColor();

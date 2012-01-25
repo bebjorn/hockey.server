@@ -151,8 +151,8 @@ unsigned __stdcall senderThread(void* param){
 Puck::Puck(IplImage* frame){
 		x=0;
 		y=0;
-		//ObjectTracker track_goal1 = ObjectTracker(cvLoadImage("goal1.bmp",0),"red");//object som letar efter ena målet
-		//ObjectTracker track_goal2 = ObjectTracker(cvLoadImage("goal2.bmp",0),"red");//object som letar efter andra målet
+		ObjectTracker track_goal1 = ObjectTracker(cvLoadImage("goal1.bmp",0),"red");//object som letar efter ena målet
+		ObjectTracker track_goal2 = ObjectTracker(cvLoadImage("goal2.bmp",0),"red");//object som letar efter andra målet
 		
 		
 		goal1=cvPoint2D32f(62,117);//skapar punkter med målens ungefärliga position
@@ -160,8 +160,8 @@ Puck::Puck(IplImage* frame){
 		
 		
 
-		//track_goal1.trackObject(frame,&goal1);//hittar målens position
-		//track_goal2.trackObject(frame,&goal2);
+		track_goal1.trackObject(frame,&goal1,false);//hittar målens position
+		track_goal2.trackObject(frame,&goal2,false);
 	}
 void Puck::updatePosition(CvPoint2D32f* ps){
 	//gör linjär transformation pixelkordinatrer -> millimeter med hjälp utav målens position

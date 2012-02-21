@@ -106,7 +106,7 @@ unsigned __stdcall senderThread(void* param){
 	int t=0;
 	while(running){//bygger meddelanden och skickar dem till AI-modulerna
 		//long t=clock();
-		Sleep(50);
+		Sleep(10);
 		//cout<<" cycletime: "<<clock()-t<<endl;
 		//t =clock();
 		int lengthHome=homeSerial->read(homeStatus);
@@ -128,7 +128,7 @@ unsigned __stdcall senderThread(void* param){
 			awayMessage[index]=(awayStatus[i]&0xff);//awayStatus[i];
 			homeMessage[index++]=(homeStatus[i]&0xff);
 			
-			myfile<<(int)homeStatus[i]<<"\t";
+			myfile<<(int)(homeStatus[i] & 0xff)<<"\t";
 			
 		}
 		
@@ -136,7 +136,7 @@ unsigned __stdcall senderThread(void* param){
 			awayMessage[index]=(homeStatus[i]&0xff);
 			homeMessage[index++]=(awayStatus[i]&0xff);//awayStatus[i];
 			
-			myfile<<(int)homeStatus[i]<<"\t";
+			myfile<<(int)(awayStatus[i] & 0xff)<<"\t";
 		}
 		
 		myfile<<endl;

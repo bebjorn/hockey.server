@@ -1,16 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="cChecker|Win32">
-      <Configuration>cChecker</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="micProc|Win32">
-      <Configuration>micProc</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
@@ -28,11 +20,6 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='micProc|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -44,25 +31,15 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\PropertySheet\network.props" />
-    <Import Project="..\PropertySheet\capture.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='micProc|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\PropertySheet\network.props" />
-    <Import Project="..\PropertySheet\capture.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\PropertySheet\network.props" />
-    <Import Project="..\PropertySheet\captureRelease.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ExecutablePath>$(SolutionDir)\CommonSource\OpenCV2.2\bin;$(ExecutablePath)</ExecutablePath>
-    <IntDir>$(Configuration)</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='micProc|Win32'">
     <ExecutablePath>$(SolutionDir)\CommonSource\OpenCV2.2\bin;$(ExecutablePath)</ExecutablePath>
     <IntDir>$(Configuration)</IntDir>
   </PropertyGroup>
@@ -70,18 +47,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\OpenCV2.2\include;D:\OpenCV2.2\include\opencv;D:\CommonSource\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\include;D:\Program Files (x86)\The Imaging Source Europe GmbH\IC Imaging Control 3.2\samples\vc10\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='micProc|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\CommonSource\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\win32\debug;D:\CommonSource\OpenCV2.2\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wsock32.lib;opencv_core220d.lib;opencv_highgui220d.lib;opencv_video220d.lib;opencv_ml220d.lib;opencv_legacy220d.lib;opencv_imgproc220d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,8 +69,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\CommonSource\PracticalSocket.cpp" />
-    <ClCompile Include="..\..\..\..\..\CommonSource\SerialClass.cpp" />
+    <ClCompile Include="PracticalSocket.cpp" />
+    <ClCompile Include="SerialClass.cpp" />
     <ClCompile Include="CalibrationMode.cpp" />
     <ClCompile Include="CamCapture.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -113,9 +84,9 @@
     <ClCompile Include="TeamConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\CommonSource\PracticalSocket.h" />
-    <ClInclude Include="..\..\..\..\..\CommonSource\SerialClass.h" />
-    <ClInclude Include="..\..\..\..\..\CommonSource\serialcomm.h" />
+    <ClInclude Include="PracticalSocket.h" />
+    <ClInclude Include="SerialClass.h" />
+    <ClInclude Include="serialcomm.h" />
     <ClInclude Include="calibrateMicroController.h" />
     <ClInclude Include="CalibrationMode.h" />
     <ClInclude Include="CamCapture.h" />

@@ -3,8 +3,9 @@ Release
 *.user
 *.suo
 *.pdb
-
-
+*.sdf
+*.opensdf
 /measurements.txt
 /commands.txt
 /device.xml
+/ipch

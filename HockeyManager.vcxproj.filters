@@ -45,13 +45,13 @@
     <ClCompile Include="Gametime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\CommonSource\PracticalSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\CommonSource\SerialClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="micCal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PracticalSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,16 +83,16 @@
     <ClInclude Include="Gametime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\CommonSource\PracticalSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\CommonSource\SerialClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\CommonSource\serialcomm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="calibrateMicroController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PracticalSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="serialcomm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

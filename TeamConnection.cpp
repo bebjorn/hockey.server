@@ -39,7 +39,7 @@ bool Team::fromSource(Connection source){
 	return connection==source;
 }
 
-bool Connection::operator==(Connection b){//likamed operator för anslitning
+bool Connection::operator==(Connection b){//likamed operator för anslutning
 	return b.adress==adress&&b.port==port;
 }
 Team* homeTeam=0;
@@ -59,7 +59,7 @@ unsigned __stdcall recieverThread(void* sock){
 	homeSerial->write(NULL,0);//slutar kalibrara mikrokontrollerna när spelet börjar
 	awaySerial->write(NULL,0);
 	for(;;){// recieves commands and passes them on to correct microprocessor
-		int rcvBytes=socket->recvFrom(buf,BUFLENGTH,source.adress,source.port);//tar emot meddelande
+		int rcvBytes=socket->recvFrom(buf,BUFLENGTH,source.adress,source.port); //tar emot meddelande
 		int index=0;
 		myfile<<getGametime()<<"\t";//sparar speltiden när kommandot mottogs
 		for (int i=0;i<rcvBytes;i=i+4){//läser intfält som ett charfält av kommandon
@@ -68,6 +68,13 @@ unsigned __stdcall recieverThread(void* sock){
 		}
 		myfile<<endl;
 		if(homeTeam->fromSource(source)){//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
+
+			//här borde spelbegränsningar hamna
+			char homeStatus[100];
+			int lengthHome=homeSerial->read(homeStatus);
+			// kontrollera om det finns splare som inte kommit fram dit de ska ännu
+			// Måste spara undan alla komandon så att det går att kolla vilka som inte är färdiga ännu.
+			// slut på spelbegränsningar
 			homeSerial->write(msg,rcvBytes/4);//skriver till mikrokontroller
 		}else if(awayTeam->fromSource(source)){
 			awaySerial->write(msg,rcvBytes/4);

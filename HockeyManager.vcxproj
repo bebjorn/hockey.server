@@ -47,11 +47,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\OpenCV2.2\include;D:\OpenCV2.2\include\opencv;D:\CommonSource\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\include;D:\Program Files (x86)\The Imaging Source Europe GmbH\IC Imaging Control 3.2\samples\vc10\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Bear\Documents\Visual Studio 2010\Projects\include\OpenCV2.2\include\opencv;C:\Users\Bear\Documents\Visual Studio 2010\Projects\include;D:\OpenCV2.2\include;C:\Users\Bear\Documents\Visual Studio 2010\Projects\include\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\include;D:\OpenCV2.2\include\opencv;C:\Users\Bear\Documents\Visual Studio 2010\Projects\include\OpenCV2.2\include;D:\CommonSource\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\include;C:\Users\Bear\Documents\Visual Studio 2010\Projects\include\Common;D:\Program Files (x86)\The Imaging Source Europe GmbH\IC Imaging Control 3.2\samples\vc10\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\CommonSource\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\win32\debug;D:\CommonSource\OpenCV2.2\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Bear\Documents\Visual Studio 2010\Projects\include\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\win32\debug;C:\Users\Bear\Documents\Visual Studio 2010\Projects\include\OpenCV2.2\lib;D:\CommonSource\The Imaging Source Europe GmbH\IC Imaging Control 3.2\classlib\win32\debug;D:\CommonSource\OpenCV2.2\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>wsock32.lib;opencv_core220d.lib;opencv_highgui220d.lib;opencv_video220d.lib;opencv_ml220d.lib;opencv_legacy220d.lib;opencv_imgproc220d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

@@ -1,5 +1,5 @@
 #include "CamCapture.h"
-#include "D:\CamLicense.h"
+#include "C:\Users\Bear\Documents\Visual Studio 2010\Projects\CamLicense.h"
 
 //Constructor that initilizes the library. License from camera.
 #ifdef COLORCHECKER
@@ -71,5 +71,3 @@ void CamCapture::myQueryFrame(IplImage* frame){
 	cvReleaseImage(&raw);
 	
 }
-
-

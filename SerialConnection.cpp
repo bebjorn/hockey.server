@@ -63,8 +63,6 @@ void SerialConnection::write(char* com,int length,char* _mode){//sätter vd som s
 	memcpy(inBuf,com,length);					//
 	inBufLength=length;							//
 	ReleaseMutex(writeMutex);					//
-	
-
 }
 int SerialConnection::read(char* com){//läser den senste informationen från mikrokontrollern
 	WaitForSingleObject(readMutex,INFINITE);

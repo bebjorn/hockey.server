@@ -17,11 +17,13 @@ bool running=false;
 bool paused=false;
 SerialConnection* homeSerial;
 SerialConnection* awaySerial;
+int homeGoals;
+int awayGoals;
 CamCapture* capture;
 ObjectTracker track_puck;
 Puck puck;
-int gameTime=0;
-int gameStartTime=0;
+//int gameTime=0;
+//int gameStartTime=0;
 bool trackingInitialized=false;
 bool micConInitialized=false;
 bool initializeTracking(){
@@ -94,8 +96,8 @@ unsigned __stdcall cameraThread(void* param){
 unsigned __stdcall senderThread(void* param){
 
 	cout<<"senderthread started"<<endl;
-	const int MESSAGELENGTH=27;
-	char homeStatus[100];
+	const int MESSAGELENGTH=29;
+	char homeStatus[100];   //borde inte dessa minskas???
 	char awayStatus[100];
 	int homeMessage[MESSAGELENGTH];
 	int awayMessage[MESSAGELENGTH];
@@ -113,6 +115,12 @@ unsigned __stdcall senderThread(void* param){
 		int lengthAway=awaySerial->read(awayStatus);
 		
 		int index=0;
+		awayMessage[index]=awayGoals;
+		homeMessage[index++]=homeGoals;
+
+		awayMessage[index]=homeGoals;
+		homeMessage[index++]=awayGoals;
+
 		awayMessage[index]=puck.x;
 		homeMessage[index++]=puck.x;
 

@@ -14,11 +14,8 @@ int main(){
 	while(!quit){
 		switch(getch()){//lyssnar efter input från tangetbord
 		case 'i':
-			
-				
 				cout<<"initializing"<<endl;
 				game.initializeGame();
-				
 			
 			break;
 		case 'p':

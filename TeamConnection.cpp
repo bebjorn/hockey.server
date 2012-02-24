@@ -4,15 +4,21 @@
 #include "GameState.h"
 #include <fstream>
 #include "Gametime.h"
-Team::Team(UDPSocket* sock,Connection source,bool home){
-	connection=source;
-	socket=sock;
-	teamPlayerShift=0;
-	if(!home){
-		teamPlayerShift=6;
-	}
-	
+
+UDPSocket *listeningSocket = NULL;
+
+Team::Team(Connection source) {
+	connection = source;
+	socket = new UDPSocket();
 }
+
+Team::~Team() {
+	if (socket != NULL) {
+		delete socket;
+		socket = NULL;
+	}
+}
+
 void Team::send(int* toSend,const int bufLength){//skickar speltillstånd till spelare
 	char msg[4*39];//antal chars som beskriver speltillståndet
 

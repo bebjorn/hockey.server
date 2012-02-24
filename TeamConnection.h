@@ -13,18 +13,18 @@ struct Connection{//struct för att hålla reda på anslutnng
 class Team{// klass för att sköta kommunikation med AI-modul
 	Connection connection;
 	UDPSocket* socket;
-	int teamPlayerShift;
 	
 	public:
 		void send(int* buf,const int bufLength);
 		bool fromSource(Connection source);
 		void command(int com[BUFLENGTH],int length);
-		Team(UDPSocket* sock,Connection source,bool homeTeam=true);
-	
+		Team(Connection source);
+		~Team();
 };
 extern Team* homeTeam;
 extern Team* awayTeam;
 
+extern UDPSocket *listeningSocket;
 
 unsigned __stdcall recieverThread(void* param);
 

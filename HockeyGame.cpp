@@ -37,7 +37,7 @@ bool HockeyGame::setUpConnections(){//upprättar anslutning AI-moduler
 			return false;
 		}
 		recieverThreadHandle=(HANDLE)_beginthreadex(NULL,0,recieverThread,(void*)listeningSocket,CREATE_SUSPENDED,NULL);//startar tråden pausad, se teamConnections.cpp
-		clientsAliveThreadHandle = (HANDLE)_beginthreadex(NULL, 0, checkClientsProc, NULL, CREATE_SUSPENDED, NULL);
+		clientsAliveThreadHandle = (HANDLE)_beginthreadex(NULL, 0, checkClientsProc, (void *)this, CREATE_SUSPENDED, NULL);
 	}
 	return true;
 }
@@ -98,7 +98,6 @@ void HockeyGame::stopGame(){//avslutar spelet
 		safeTerminateThread(senderThreadHandle);
 		safeTerminateThread(recieverThreadHandle);
 		safeTerminateThread(cameraThreadHandle);
-		safeTerminateThread(clientsAliveThreadHandle);
 
 		// TODO: Make/find delete and null-function
 		if (homeTeam != NULL) {
@@ -116,6 +115,8 @@ void HockeyGame::stopGame(){//avslutar spelet
 
 		running=false;
 		cout << "stopped" << endl;
+		
+		safeTerminateThread(clientsAliveThreadHandle);
 	}else{
 		cout<<"can't stop game: game isn't running"<<endl;
 	}

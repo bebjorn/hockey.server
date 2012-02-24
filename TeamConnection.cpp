@@ -4,6 +4,7 @@
 #include "GameState.h"
 #include <fstream>
 #include "Gametime.h"
+#include "HockeyGame.h"
 
 UDPSocket *listeningSocket = NULL;
 
@@ -112,7 +113,7 @@ unsigned __stdcall recieverThread(void* sock){
 	}
 }
 
-void checkClient(Team *pTeam) {
+bool checkClient(Team *pTeam) {
 	char c = 'D';
 	int i = 0;
 	cout << "Checking team alive..." << endl;
@@ -124,15 +125,18 @@ void checkClient(Team *pTeam) {
 	}
 	if (!pTeam->isAlive()) {
 		cout << "Team not alive!" << endl;
-		cout << "TODO: kill" << endl;
+		return false;
 	}
-	else cout << "Team alive :-)" << endl;
+	cout << "Team alive :-)" << endl;
+	return true;
 }
 
-unsigned __stdcall checkClientsProc(void* param) {
+unsigned __stdcall checkClientsProc(void *param) {
 	while (true) {
-		checkClient(homeTeam);
-		checkClient(awayTeam);
+		if (!checkClient(homeTeam))
+			((HockeyGame *)param)->stopGame();
+		if (!checkClient(awayTeam))
+			((HockeyGame *)param)->stopGame();
 		Sleep(10000);
 	}
 }

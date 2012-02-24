@@ -5,6 +5,7 @@
 #include <fstream>
 #include "Gametime.h"
 #include "HockeyGame.h"
+#include "Limits.h"
 
 UDPSocket *listeningSocket = NULL;
 
@@ -64,8 +65,17 @@ bool Team::isAlive() {
 bool Connection::operator==(Connection b){//likamed operator för anslitning
 	return b.adress==adress&&b.port==port;
 }
+
 Team* homeTeam=0;
 Team* awayTeam=0;
+
+Team *teamFromConnection(Connection *pConnection) {
+	if (homeTeam->fromSource(*pConnection)) 
+		return homeTeam;
+	else if(awayTeam->fromSource(*pConnection))
+		return awayTeam;
+	return NULL;
+}
 
 unsigned __stdcall recieverThread(void* sock){
 	if(homeTeam==NULL||awayTeam==NULL){
@@ -83,31 +93,37 @@ unsigned __stdcall recieverThread(void* sock){
 	awaySerial->write(NULL,0);
 	for(;;){// recieves commands and passes them on to correct microprocessor
 		int rcvBytes=socket->recvFrom(buf,BUFLENGTH,source.adress,source.port);//tar emot meddelande
-		if (rcvBytes == 1) {
-			if (buf[0] == 'N') {
-				Team *team = NULL;
-				if (homeTeam->fromSource(source)) 
-					team = homeTeam;
-				else if(awayTeam->fromSource(source))
-					team = awayTeam;
-				
-				if (team != NULL)
+		Team *team = teamFromConnection(&source);
+		if (team != NULL) {
+			if (rcvBytes == 1) {
+				if (buf[0] == 'N')
 					team->reportAlive();
 			}
-		}
-		else {
-			int index=0;
-			myfile<<getGametime()<<"\t";//sparar speltiden när kommandot mottogs
-			for (int i = 0; i < rcvBytes; i = i + 4){//läser intfält som ett charfält av kommandon
-				msg[index] = buf[i];
-				myfile << (int)(index % 5 == 3 ? (signed char)msg[index] : (unsigned char)msg[index]) << "\t";
-				index++;
-			}
-			myfile<<endl;
-			if(homeTeam->fromSource(source)){//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
-				homeSerial->write(msg,rcvBytes/4);//skriver till mikrokontroller
-			}else if(awayTeam->fromSource(source)){
-				awaySerial->write(msg,rcvBytes/4);
+			else if ((rcvBytes % (5 * 4)) == 0) {
+				int index = 0;
+				int cmdIndex = 0;
+				for (int cmdIndex = 0; cmdIndex < rcvBytes / 5 / 4; cmdIndex++) {
+					myfile << getGametime() << "\t";			//sparar speltiden när kommandot mottogs
+					char cmd[5];
+					for (int i = 0; i < 5; i++) {	//läser intfält som ett charfält av kommandon
+						cmd[i] = buf[cmdIndex * 5 * 4 + i * 4];
+						myfile << (int)(i == 3 ? (signed char)msg[i] : (unsigned char)msg[i]) << "\t";
+					}
+					// one command should now be in msg
+					if (isCommandOkay(team == homeTeam ? 0 : 1, cmd)) {
+						memcpy(msg + index, cmd, 5);
+						index += 5;
+						myfile << "+";
+					}
+					else myfile << "-";
+					myfile<<endl;
+				}
+
+				
+				if (team == homeTeam)//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
+					homeSerial->write(msg, index);//skriver till mikrokontroller
+				else if(team == awayTeam)
+					awaySerial->write(msg, index);			
 			}
 		}
 	}

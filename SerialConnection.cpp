@@ -53,19 +53,21 @@ void SerialConnection::communicate(){
 		ReleaseMutex(readMutex);					//
 	}
 }
-void SerialConnection::write(char* com,int length,char* _mode){//sätter vd som skall skickas till mikrokontrollern
-	for(int i=0;i<length;i++){
-		cout<<(int)com[i]<<"\t";
+
+void SerialConnection::write(char *com, int length, char *_mode){//sätter vd som skall skickas till mikrokontrollern
+	// DEBUG
+	for(int i = 0; i < length; i++){
+		cout << (int)(i % 5 == 3 ? (signed char)com[i] : (unsigned char)com[i]) << "\t";
 	}
 	cout<<endl;
-	WaitForSingleObject(writeMutex,INFINITE);	//Sychronized section
-	mode=_mode;									//
-	memcpy(inBuf,com,length);					//
-	inBufLength=length;							//
-	ReleaseMutex(writeMutex);					//
-	
 
+	WaitForSingleObject(writeMutex, INFINITE);	//Sychronized section
+	mode = _mode;								//
+	memcpy(inBuf, com, length);					//
+	inBufLength = length;						//
+	ReleaseMutex(writeMutex);					//
 }
+
 int SerialConnection::read(char* com){//läser den senste informationen från mikrokontrollern
 	WaitForSingleObject(readMutex,INFINITE);
 	memcpy(com, outBuf,outBufLength);

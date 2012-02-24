@@ -68,9 +68,10 @@ unsigned __stdcall recieverThread(void* sock){
 		int rcvBytes=socket->recvFrom(buf,BUFLENGTH,source.adress,source.port);//tar emot meddelande
 		int index=0;
 		myfile<<getGametime()<<"\t";//sparar speltiden när kommandot mottogs
-		for (int i=0;i<rcvBytes;i=i+4){//läser intfält som ett charfält av kommandon
-			msg[index++]=buf[i];
-			myfile<<(int)(unsigned char)msg<<"\t";
+		for (int i = 0; i < rcvBytes; i = i + 4){//läser intfält som ett charfält av kommandon
+			msg[index] = buf[i];
+			myfile << (int)(index % 5 == 3 ? (signed char)msg[index] : (unsigned char)msg[index]) << "\t";
+			index++;
 		}
 		myfile<<endl;
 		if(homeTeam->fromSource(source)){//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån

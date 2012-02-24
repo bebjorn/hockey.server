@@ -128,15 +128,14 @@ unsigned __stdcall senderThread(void* param){
 			awayMessage[index]=(awayStatus[i]&0xff);//awayStatus[i];
 			homeMessage[index++]=(homeStatus[i]&0xff);
 			
-			myfile<<(int)(homeStatus[i] & 0xff)<<"\t";
-			
+			myfile << (int)((unsigned char)homeStatus[i]) << "\t";	
 		}
 		
 		for(int i=0;i<12;i++){
 			awayMessage[index]=(homeStatus[i]&0xff);
 			homeMessage[index++]=(awayStatus[i]&0xff);//awayStatus[i];
 			
-			myfile<<(int)(awayStatus[i] & 0xff)<<"\t";
+			myfile << (int)((unsigned char)awayStatus[i]) << "\t";	
 		}
 		
 		myfile<<endl;

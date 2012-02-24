@@ -9,7 +9,8 @@ using namespace std;
 
 bool HockeyGame::setUpConnections(){//upprättar anslutning AI-moduler
 	if(homeTeam==NULL||awayTeam==NULL){
-		UDPSocket* socket=new UDPSocket(PORT);//objekt för udp-kommunikation
+		listeningSocket = new UDPSocket(PORT);//objekt för udp-kommunikation
+
 		Connection homeSource=Connection();//objekt som innehåller information om anslutningar, se TeamConnection.cpp
 		Connection awaySource=Connection();
 		char* buf[BUFLENGTH];//skapar en buffert i minnet att lägga motagna meddelanden
@@ -18,8 +19,8 @@ bool HockeyGame::setUpConnections(){//upprättar anslutning AI-moduler
 
 		cout<<"waiting at homeplayer"<<endl;
 
-		socket->recvFrom(buf,BUFLENGTH,homeSource.adress,homeSource.port);//Väntar på handskakning från AI-modul
-		homeTeam=new Team(new UDPSocket(),homeSource);//Sparar AImodulens plats
+		listeningSocket->recvFrom(buf,BUFLENGTH,homeSource.adress,homeSource.port);//Väntar på handskakning från AI-modul
+		homeTeam = new Team(homeSource);//Sparar AImodulens plats
 		homeTeam->send(handshake,1);//Skickar hanskakning
 
 		cout<<"home aquired at port "<<homeSource.port<<endl;
@@ -27,15 +28,15 @@ bool HockeyGame::setUpConnections(){//upprättar anslutning AI-moduler
 
 		handshake[0]=2;//ny hanskakning för andra laget
 	
-		socket->recvFrom(buf,BUFLENGTH,awaySource.adress,awaySource.port);
-		awayTeam=new Team(new UDPSocket(),awaySource);
+		listeningSocket->recvFrom(buf,BUFLENGTH,awaySource.adress,awaySource.port);
+		awayTeam = new Team(awaySource);
 		awayTeam->send(handshake,4);
 		cout<<"away aquired at port "<<awaySource.port<<endl;
 		if(homeTeam->fromSource(awaySource)){//kollar att int samma AI har anslutit igen, om så ge fel
 			cout<<"team already aquired, next team must be on another port"<<endl;
 			return false;
 		}
-		recieverThreadHandle=(HANDLE)_beginthreadex(NULL,0,recieverThread,(void*)socket,CREATE_SUSPENDED,NULL);//startar tråden pausad, se teamConnections.cpp
+		recieverThreadHandle=(HANDLE)_beginthreadex(NULL,0,recieverThread,(void*)listeningSocket,CREATE_SUSPENDED,NULL);//startar tråden pausad, se teamConnections.cpp
 	}
 	return true;
 }
@@ -98,6 +99,21 @@ void HockeyGame::stopGame(){//avslutar spelet
 		if(cameraThreadHandle!=NULL){
 			TerminateThread(cameraThreadHandle,0);
 		}
+
+		// TODO: Make/find delete and null-function
+		if (homeTeam != NULL) {
+			delete homeTeam;
+			homeTeam = NULL;
+		}
+		if (awayTeam != NULL) {
+			delete awayTeam;
+			awayTeam = NULL;
+		}
+		if (listeningSocket != NULL) {
+			delete listeningSocket;
+			listeningSocket = NULL;
+		}
+
 		running=false;
 	}else{
 		cout<<"can't stop game: game isn't running"<<endl;

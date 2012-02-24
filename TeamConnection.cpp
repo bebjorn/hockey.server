@@ -10,6 +10,7 @@ UDPSocket *listeningSocket = NULL;
 Team::Team(Connection source) {
 	connection = source;
 	socket = new UDPSocket();
+	lastAlive = 0;
 }
 
 Team::~Team() {
@@ -41,8 +42,22 @@ void Team::send(int* toSend,const int bufLength){//skickar speltillstånd till sp
 	socket->sendTo(msg,4*bufLength,connection.adress,connection.port);//Skickar meddelandet till AI-modul
 
 }
+
+void Team::sendBytes(char *msg, const int bufLength) {
+	socket->sendTo(msg,bufLength,connection.adress,connection.port);//Skickar meddelandet till AI-modul
+}
+
 bool Team::fromSource(Connection source){
 	return connection==source;
+}
+
+void Team::reportAlive() {
+	lastAlive = getGametime();
+}
+
+bool Team::isAlive() {
+	int currentTime = getGametime();
+	return (currentTime - lastAlive) < 10000;
 }
 
 bool Connection::operator==(Connection b){//likamed operator för anslitning
@@ -50,6 +65,7 @@ bool Connection::operator==(Connection b){//likamed operator för anslitning
 }
 Team* homeTeam=0;
 Team* awayTeam=0;
+
 unsigned __stdcall recieverThread(void* sock){
 	if(homeTeam==NULL||awayTeam==NULL){
 		cerr<<"teams not defined"<<endl;
@@ -66,19 +82,57 @@ unsigned __stdcall recieverThread(void* sock){
 	awaySerial->write(NULL,0);
 	for(;;){// recieves commands and passes them on to correct microprocessor
 		int rcvBytes=socket->recvFrom(buf,BUFLENGTH,source.adress,source.port);//tar emot meddelande
-		int index=0;
-		myfile<<getGametime()<<"\t";//sparar speltiden när kommandot mottogs
-		for (int i = 0; i < rcvBytes; i = i + 4){//läser intfält som ett charfält av kommandon
-			msg[index] = buf[i];
-			myfile << (int)(index % 5 == 3 ? (signed char)msg[index] : (unsigned char)msg[index]) << "\t";
-			index++;
+		if (rcvBytes == 1) {
+			if (buf[0] == 'N') {
+				Team *team = NULL;
+				if (homeTeam->fromSource(source)) 
+					team = homeTeam;
+				else if(awayTeam->fromSource(source))
+					team = awayTeam;
+				
+				if (team != NULL)
+					team->reportAlive();
+			}
 		}
-		myfile<<endl;
-		if(homeTeam->fromSource(source)){//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
-			homeSerial->write(msg,rcvBytes/4);//skriver till mikrokontroller
-		}else if(awayTeam->fromSource(source)){
-			awaySerial->write(msg,rcvBytes/4);
+		else {
+			int index=0;
+			myfile<<getGametime()<<"\t";//sparar speltiden när kommandot mottogs
+			for (int i = 0; i < rcvBytes; i = i + 4){//läser intfält som ett charfält av kommandon
+				msg[index] = buf[i];
+				myfile << (int)(index % 5 == 3 ? (signed char)msg[index] : (unsigned char)msg[index]) << "\t";
+				index++;
+			}
+			myfile<<endl;
+			if(homeTeam->fromSource(source)){//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
+				homeSerial->write(msg,rcvBytes/4);//skriver till mikrokontroller
+			}else if(awayTeam->fromSource(source)){
+				awaySerial->write(msg,rcvBytes/4);
+			}
 		}
-		
+	}
+}
+
+void checkClient(Team *pTeam) {
+	char c = 'D';
+	int i = 0;
+	cout << "Checking team alive..." << endl;
+
+	while (!pTeam->isAlive() && i < 5) {
+		pTeam->sendBytes(&c, 1);
+		i++;
+		Sleep(1000);
+	}
+	if (!pTeam->isAlive()) {
+		cout << "Team not alive!" << endl;
+		cout << "TODO: kill" << endl;
+	}
+	else cout << "Team alive :-)" << endl;
+}
+
+unsigned __stdcall checkClientsProc(void* param) {
+	while (true) {
+		checkClient(homeTeam);
+		checkClient(awayTeam);
+		Sleep(10000);
 	}
 }

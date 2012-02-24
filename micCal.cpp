@@ -10,4 +10,5 @@ void calibrateMicroControllers(){
 	cout<<"press any key when done"<<endl;
 	system("pause");
 	homeSerial->write(NULL,0);//save calibration
+	cout << "calibration done" << endl;
 }

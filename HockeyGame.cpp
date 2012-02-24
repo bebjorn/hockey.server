@@ -88,7 +88,6 @@ bool HockeyGame::initializeGame(){
 }
 void HockeyGame::stopGame(){//avslutar spelet
 	if(running){
-		cout<<"stopping"<<endl;
 		if(senderThreadHandle!=NULL){
 			TerminateThread(senderThreadHandle,0);
 		
@@ -115,6 +114,7 @@ void HockeyGame::stopGame(){//avslutar spelet
 		}
 
 		running=false;
+		cout << "stopped" << endl;
 	}else{
 		cout<<"can't stop game: game isn't running"<<endl;
 	}
@@ -132,8 +132,9 @@ void HockeyGame::pauseGame(){//pausa spelet
 		if(cameraThreadHandle!=NULL){
 			SuspendThread(cameraThreadHandle);
 		}
+		cout << "paused" << endl;
 	}else{
-		cout<<"can't stop game"<<endl;
+		cout<<"can't pause game"<<endl;
 	}
 }
 void HockeyGame::resumeGame(){
@@ -148,7 +149,8 @@ void HockeyGame::resumeGame(){
 		}
 		if(cameraThreadHandle!=NULL){
 			ResumeThread(cameraThreadHandle);
-		}
+		}			
+		cout << "resumed" << endl;
 	}else{
 		cout<<"can't resume game"<<endl;
 	}

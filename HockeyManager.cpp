@@ -5,47 +5,35 @@
 #include "CalibrationMode.h"
 #include "calibrateMicroController.h"
 using namespace std;
-int main(){
+int main() {
 	bool quit=false;
-	
-	greeter();//skriver ut välkomsttext
-	showHelp();// skriver ut hjälp
-	HockeyGame game=HockeyGame();
-	while(!quit){
-		switch(getch()){//lyssnar efter input från tangetbord
+	greeter();	//skriver ut välkomsttext
+	showHelp();	// skriver ut hjälp
+	HockeyGame game = HockeyGame();
+	while(!quit) {
+		switch(getch()) {	//lyssnar efter input från tangetbord
 		case 'i':
-			
-				
-				cout<<"initializing"<<endl;
+				cout << "initializing" << endl;
 				game.initializeGame();
-				
-			
 			break;
 		case 'p':
-			
-				cout<<"pausing"<<endl;
-				game.pauseGame();
-			
+				cout << "pausing" << endl;
+				game.pauseGame();	
 			break;
 		case 'r':
-			
-				cout<<"resuming"<<endl;
+				cout << "resuming" << endl;
 				game.resumeGame();
-			
 			break;
 		case 's':
-			
-				
+				cout << "stopping" << endl;
 				game.stopGame();
-			
-
 			break;
 		case 'q':
-			quit=true;//avslutar loopen
-			cout<<"quiting"<<endl;
+			quit = true;	// avslutar loopen
+			cout << "quiting" << endl;
 			break;
 		case 'a':
-			calibrate();// startar bildkalibrerings program
+			calibrate();	// startar bildkalibrerings program
 			break;
 		case 'h':
 			showHelp();
@@ -60,15 +48,15 @@ int main(){
 }
 
 void showHelp(){
-	cout<<"i - initialize game"<<endl
-		<<"p - pause game"<<endl
-		<<"s - stop game"<<endl
-		<<"q - quit game"<<endl
-		<<"h - show this help"<<endl
-		<<"c - calibrate microcontrollers"<<endl
-		<<"a - calibrate image processing"<<endl;
+	cout << "i - initialize game" << endl
+		 << "p - pause game" << endl
+		 << "s - stop game" << endl
+		 << "q - quit game" << endl
+		 << "h - show this help" << endl
+		 << "c - calibrate microcontrollers" << endl
+		 << "a - calibrate image processing" << endl;
 
 }
 void greeter(){
-	cout<<"Welcome to the managing program for CIHC"<<endl;
+	cout << "Welcome to the Hockey Server program" << endl;
 }

@@ -18,7 +18,6 @@ Team::~Team() {
 		socket = NULL;
 	}
 }
-
 void Team::send(int* toSend,const int bufLength){//skickar speltillstånd till spelare
 	char msg[4*39];//antal chars som beskriver speltillståndet
 
@@ -51,6 +50,10 @@ bool Connection::operator==(Connection b){//likamed operator för anslutning
 Team* homeTeam=0;
 Team* awayTeam=0;
 unsigned __stdcall recieverThread(void* sock){
+	//###### Player comands are saved here
+	char homeCmd[30];
+	char awayCmd[30];
+	//######
 	if(homeTeam==NULL||awayTeam==NULL){
 		cerr<<"teams not defined"<<endl;
 		exit(1);
@@ -76,9 +79,10 @@ unsigned __stdcall recieverThread(void* sock){
 		if(homeTeam->fromSource(source)){//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
 
 			//här borde spelbegränsningar hamna
-			char homeStatus[100];
+			/*char homeStatus[100];
 			int lengthHome=homeSerial->read(homeStatus);
-			// kontrollera om det finns splare som inte kommit fram dit de ska ännu
+			while(msg[i]!= )*/
+			// kontrollera vilka spelare som inte kommit fram dit de ska ännu
 			// Måste spara undan alla komandon så att det går att kolla vilka som inte är färdiga ännu.
 			// slut på spelbegränsningar
 			homeSerial->write(msg,rcvBytes/4);//skriver till mikrokontroller

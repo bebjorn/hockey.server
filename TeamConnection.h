@@ -13,8 +13,8 @@ struct Connection{//struct för att hålla reda på anslutnng
 class Team{// klass för att sköta kommunikation med AI-modul
 	Connection connection;
 	UDPSocket* socket;
-	
 	public:
+		void sendNewTeamState (int* buf,const int bufLength);
 		void send(int* buf,const int bufLength);
 		bool fromSource(Connection source);
 		void command(int com[BUFLENGTH],int length);

@@ -3,6 +3,7 @@
 class HockeyGame{//klass för hanterandet av flödet i spelet
 	HANDLE senderThreadHandle;
 	HANDLE recieverThreadHandle;
+	HANDLE clientsAliveThreadHandle;
 	HANDLE cameraThreadHandle;
 public:
 	bool initializeGame();

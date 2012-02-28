@@ -37,6 +37,7 @@ bool HockeyGame::setUpConnections(){//upprättar anslutning AI-moduler
 			return false;
 		}
 		recieverThreadHandle=(HANDLE)_beginthreadex(NULL,0,recieverThread,(void*)listeningSocket,CREATE_SUSPENDED,NULL);//startar tråden pausad, se teamConnections.cpp
+		clientsAliveThreadHandle = (HANDLE)_beginthreadex(NULL, 0, checkClientsProc, (void *)this, CREATE_SUSPENDED, NULL);
 	}
 	return true;
 }
@@ -86,19 +87,17 @@ bool HockeyGame::initializeGame(){
 	}
 	return running;
 }
+
+void safeTerminateThread(HANDLE threadHandle) {
+	if (threadHandle != NULL)
+		TerminateThread(threadHandle, 0);
+}
+
 void HockeyGame::stopGame(){//avslutar spelet
 	if(running){
-		cout<<"stopping"<<endl;
-		if(senderThreadHandle!=NULL){
-			TerminateThread(senderThreadHandle,0);
-		
-		}
-		if(recieverThreadHandle!=NULL){
-			TerminateThread(recieverThreadHandle,0);
-		}
-		if(cameraThreadHandle!=NULL){
-			TerminateThread(cameraThreadHandle,0);
-		}
+		safeTerminateThread(senderThreadHandle);
+		safeTerminateThread(recieverThreadHandle);
+		safeTerminateThread(cameraThreadHandle);
 
 		// TODO: Make/find delete and null-function
 		if (homeTeam != NULL) {
@@ -115,40 +114,51 @@ void HockeyGame::stopGame(){//avslutar spelet
 		}
 
 		running=false;
+		cout << "stopped" << endl;
+		
+		safeTerminateThread(clientsAliveThreadHandle);
 	}else{
 		cout<<"can't stop game: game isn't running"<<endl;
 	}
 }
+
+void safeSuspendThread(HANDLE handle) {
+	if (handle != NULL)
+		SuspendThread(handle);
+}
+
 void HockeyGame::pauseGame(){//pausa spelet
 	if(running&&!paused){
 		paused=true;
 		pauseGametime();
-		if(senderThreadHandle!=NULL){
-			SuspendThread(senderThreadHandle);
-		}
-		if(recieverThreadHandle!=NULL){
-			SuspendThread(recieverThreadHandle);
-		}
-		if(cameraThreadHandle!=NULL){
-			SuspendThread(cameraThreadHandle);
-		}
+
+		safeSuspendThread(senderThreadHandle);
+		safeSuspendThread(recieverThreadHandle);
+		safeSuspendThread(cameraThreadHandle);
+		safeSuspendThread(clientsAliveThreadHandle);
+
+		cout << "paused" << endl;
 	}else{
-		cout<<"can't stop game"<<endl;
+		cout<<"can't pause game"<<endl;
 	}
 }
+
+void safeResumeThread(HANDLE handle) {
+	if (handle != NULL)
+		ResumeThread(handle);
+}
+
 void HockeyGame::resumeGame(){
 	if(running&&paused){
 		paused=false;
 		resumeGametime();
-		if(senderThreadHandle!=NULL){
-			ResumeThread(senderThreadHandle);
-		}
-		if(recieverThreadHandle!=NULL){
-			ResumeThread(recieverThreadHandle);
-		}
-		if(cameraThreadHandle!=NULL){
-			ResumeThread(cameraThreadHandle);
-		}
+
+		safeResumeThread(senderThreadHandle);
+		safeResumeThread(recieverThreadHandle);
+		safeResumeThread(cameraThreadHandle);
+		safeResumeThread(clientsAliveThreadHandle);
+
+		cout << "resumed" << endl;
 	}else{
 		cout<<"can't resume game"<<endl;
 	}

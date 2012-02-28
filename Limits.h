@@ -1,0 +1,1 @@
+bool isCommandOkay(int teamId, char *cmd);

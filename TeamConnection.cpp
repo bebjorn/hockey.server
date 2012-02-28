@@ -4,12 +4,15 @@
 #include "GameState.h"
 #include <fstream>
 #include "Gametime.h"
+#include "HockeyGame.h"
+#include "Limits.h"
 
 UDPSocket *listeningSocket = NULL;
 
 Team::Team(Connection source) {
 	connection = source;
 	socket = new UDPSocket();
+	lastAlive = 0;
 }
 
 Team::~Team() {
@@ -40,15 +43,39 @@ void Team::send(int* toSend,const int bufLength){//skickar speltillstånd till sp
 	socket->sendTo(msg,4*bufLength,connection.adress,connection.port);//Skickar meddelandet till AI-modul
 
 }
+
+void Team::sendBytes(char *msg, const int bufLength) {
+	socket->sendTo(msg,bufLength,connection.adress,connection.port);//Skickar meddelandet till AI-modul
+}
+
 bool Team::fromSource(Connection source){
 	return connection==source;
 }
 
-bool Connection::operator==(Connection b){//likamed operator för anslutning
+void Team::reportAlive() {
+	lastAlive = getGametime();
+}
+
+bool Team::isAlive() {
+	int currentTime = getGametime();
+	return (currentTime - lastAlive) < 10000;
+}
+
+bool Connection::operator==(Connection b){//likamed operator för anslitning
 	return b.adress==adress&&b.port==port;
 }
+
 Team* homeTeam=0;
 Team* awayTeam=0;
+
+Team *teamFromConnection(Connection *pConnection) {
+	if (homeTeam->fromSource(*pConnection)) 
+		return homeTeam;
+	else if(awayTeam->fromSource(*pConnection))
+		return awayTeam;
+	return NULL;
+}
+
 unsigned __stdcall recieverThread(void* sock){
 	//###### Player comands are saved here
 	char homeCmd[30];
@@ -69,26 +96,66 @@ unsigned __stdcall recieverThread(void* sock){
 	awaySerial->write(NULL,0);
 	for(;;){// recieves commands and passes them on to correct microprocessor
 		int rcvBytes=socket->recvFrom(buf,BUFLENGTH,source.adress,source.port); //tar emot meddelande
-		int index=0;
-		myfile<<getGametime()<<"\t";//sparar speltiden när kommandot mottogs
-		for (int i=0;i<rcvBytes;i=i+4){//läser intfält som ett charfält av kommandon
-			msg[index++]=buf[i];
-			myfile<<(int)(unsigned char)msg<<"\t";
-		}
-		myfile<<endl;
-		if(homeTeam->fromSource(source)){//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
+		Team *team = teamFromConnection(&source);
+		if (team != NULL) {
+			if (rcvBytes == 1) {
+				if (buf[0] == 'N')
+					team->reportAlive();
+			}
+			else if ((rcvBytes % (5 * 4)) == 0) {
+				int index = 0;
+				int cmdIndex = 0;
+				for (int cmdIndex = 0; cmdIndex < rcvBytes / 5 / 4; cmdIndex++) {
+					myfile << getGametime() << "\t";			//sparar speltiden när kommandot mottogs
+					char cmd[5];
+					for (int i = 0; i < 5; i++) {	//läser intfält som ett charfält av kommandon
+						cmd[i] = buf[cmdIndex * 5 * 4 + i * 4];
+						myfile << (int)(i == 3 ? (signed char)msg[i] : (unsigned char)msg[i]) << "\t";
+					}
+					// one command should now be in msg
+					if (isCommandOkay(team == homeTeam ? 0 : 1, cmd)) {
+						memcpy(msg + index, cmd, 5);
+						index += 5;
+						myfile << "+";
+					}
+					else myfile << "-";
+					myfile<<endl;
+				}
 
-			//här borde spelbegränsningar hamna
-			/*char homeStatus[100];
-			int lengthHome=homeSerial->read(homeStatus);
-			while(msg[i]!= )*/
-			// kontrollera vilka spelare som inte kommit fram dit de ska ännu
-			// Måste spara undan alla komandon så att det går att kolla vilka som inte är färdiga ännu.
-			// slut på spelbegränsningar
-			homeSerial->write(msg,rcvBytes/4);//skriver till mikrokontroller
-		}else if(awayTeam->fromSource(source)){
-			awaySerial->write(msg,rcvBytes/4);
+				
+				if (team == homeTeam)//skickar vidare kommandot beroende på vartifrån meddelandet kom ifrån
+					homeSerial->write(msg, index);//skriver till mikrokontroller
+				else if(team == awayTeam)
+					awaySerial->write(msg, index);			
+			}
 		}
-		
+	}
+}
+
+bool checkClient(Team *pTeam) {
+	char c = 'D';
+	int i = 0;
+	cout << "Checking team alive..." << endl;
+
+	while (!pTeam->isAlive() && i < 5) {
+		pTeam->sendBytes(&c, 1);
+		i++;
+		Sleep(1000);
+	}
+	if (!pTeam->isAlive()) {
+		cout << "Team not alive!" << endl;
+		return false;
+	}
+	cout << "Team alive :-)" << endl;
+	return true;
+}
+
+unsigned __stdcall checkClientsProc(void *param) {
+	while (true) {
+		if (!checkClient(homeTeam))
+			((HockeyGame *)param)->stopGame();
+		if (!checkClient(awayTeam))
+			((HockeyGame *)param)->stopGame();
+		Sleep(10000);
 	}
 }
